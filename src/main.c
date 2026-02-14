@@ -6,7 +6,7 @@
 #include "file.h"
 #include "parse.h"
 
-void print_usage(char* argv[]) {
+void printUsage(char* argv[]) {
     printf("Usage: %s -n -f <database file>\n", argv[0]);
     printf("\t -n  - create new database file\n");
     printf("\t -f  - (required) path to database file\n");
@@ -17,6 +17,8 @@ int main(int argc, char* argv[]) {
     char* filepath = NULL;
     bool newfile = false;
     int c;
+
+    int dbfd = -1;
 
     while ((c = getopt(argc, argv, "nf:")) != -1) {
         switch (c) {
@@ -35,8 +37,22 @@ int main(int argc, char* argv[]) {
 
     if (filepath == NULL) {
         printf("Filepath is a required argument\n");
-        print_usage(argv);
+        printUsage(argv);
         return 0;
+    }
+
+    if (newfile) {
+        dbfd = createDbFile(filepath);
+        if (dbfd == STATUS_ERROR) {
+            printf("Unable to create database file\n");
+            return -1;
+        }
+    } else {
+        dbfd = openDbFile(filepath);
+        if (dbfd == STATUS_ERROR) {
+            printf("Unable to open database file\n");
+            return -1;
+        }
     }
 
     printf("Newfile: %d\n", newfile);
