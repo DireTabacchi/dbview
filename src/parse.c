@@ -9,7 +9,7 @@
 #include "common.h"
 #include "parse.h"
 
-int createDbHeader(int fd, struct dbheader_t **header_out) {
+int create_db_header(int fd, struct dbheader_t **header_out) {
     struct dbheader_t* header = calloc(1, sizeof(struct dbheader_t));
     if (header == NULL) {
         printf("calloc failed to create db header\n");
@@ -26,7 +26,7 @@ int createDbHeader(int fd, struct dbheader_t **header_out) {
     return STATUS_SUCCESS;
 }
 
-int validateDbHeader(int fd, struct dbheader_t **header_out) {
+int validate_db_header(int fd, struct dbheader_t **header_out) {
     if (fd < 0) {
         printf("Got a bad file descriptor\n");
         return STATUS_ERROR;
@@ -74,7 +74,7 @@ int validateDbHeader(int fd, struct dbheader_t **header_out) {
     return STATUS_SUCCESS;
 }
 
-void outputFile(int fd, struct dbheader_t* dbhdr) {
+void output_file(int fd, struct dbheader_t* dbhdr) {
     if (fd < 0) {
         printf("Got a bad file descriptor\n");
         return;

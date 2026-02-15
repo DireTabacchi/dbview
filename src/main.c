@@ -6,7 +6,7 @@
 #include "file.h"
 #include "parse.h"
 
-void printUsage(char* argv[]) {
+void print_usage(char* argv[]) {
     printf("Usage: %s -n -f <database file>\n", argv[0]);
     printf("\t -n  - create new database file\n");
     printf("\t -f  - (required) path to database file\n");
@@ -38,29 +38,29 @@ int main(int argc, char* argv[]) {
 
     if (filepath == NULL) {
         printf("Filepath is a required argument\n");
-        printUsage(argv);
+        print_usage(argv);
         return 0;
     }
 
     if (newfile) {
-        dbfd = createDbFile(filepath);
+        dbfd = create_db_file(filepath);
         if (dbfd == STATUS_ERROR) {
             printf("Unable to create database file\n");
             return -1;
         }
 
-        if (createDbHeader(dbfd, &dbhdr) == STATUS_ERROR) {
+        if (create_db_header(dbfd, &dbhdr) == STATUS_ERROR) {
             printf("Failed to create database header\n");
             return -1;
         }
     } else {
-        dbfd = openDbFile(filepath);
+        dbfd = open_db_file(filepath);
         if (dbfd == STATUS_ERROR) {
             printf("Unable to open database file\n");
             return -1;
         }
 
-        if (validateDbHeader(dbfd, &dbhdr) == STATUS_ERROR) {
+        if (validate_db_header(dbfd, &dbhdr) == STATUS_ERROR) {
             printf("Failed to validate database header\n");
             return -1;
         }
@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     printf("Newfile: %d\n", newfile);
     printf("Filepath: %s\n", filepath);
 
-    outputFile(dbfd, dbhdr);
+    output_file(dbfd, dbhdr);
 
     return 0;
 }

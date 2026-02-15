@@ -8,7 +8,7 @@
 #include "file.h"
 #include "common.h"
 
-int createDbFile(char* filename) {
+int create_db_file(char* filename) {
     int fd = open(filename, O_RDONLY);
     if (fd != -1) {
         close(fd);
@@ -25,7 +25,7 @@ int createDbFile(char* filename) {
     return fd;
 }
 
-int openDbFile(char* filename) {
+int open_db_file(char* filename) {
     int fd = open(filename, O_RDWR, 0644);
     if (fd == -1) {
         perror("open");
