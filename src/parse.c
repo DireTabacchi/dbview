@@ -74,7 +74,7 @@ int validate_db_header(int fd, struct dbheader_t **header_out) {
     return STATUS_SUCCESS;
 }
 
-void output_file(int fd, struct dbheader_t* dbhdr) {
+void output_file(int fd, struct dbheader_t* dbhdr, struct employee_t* employees) {
     if (fd < 0) {
         printf("Got a bad file descriptor\n");
         return;
