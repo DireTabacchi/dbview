@@ -74,11 +74,10 @@ int validate_db_header(int fd, struct dbheader_t **header_out) {
     return STATUS_SUCCESS;
 }
 
-void output_file(int fd, struct dbheader_t* dbhdr, struct employee_t* employees) {
+int output_file(int fd, struct dbheader_t* dbhdr, struct employee_t* employees) {
     if (fd < 0) {
         printf("Got a bad file descriptor\n");
-        return;
-        //return STATUS_ERROR;
+        return STATUS_ERROR;
     }
 
     dbhdr->magic = htonl(dbhdr->magic);
@@ -89,4 +88,5 @@ void output_file(int fd, struct dbheader_t* dbhdr, struct employee_t* employees)
     lseek(fd, 0, SEEK_SET);
 
     write(fd, dbhdr, sizeof(struct dbheader_t));
+    return STATUS_SUCCESS;
 }
