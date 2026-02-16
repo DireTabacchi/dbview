@@ -132,7 +132,8 @@ int add_employee(struct dbheader_t* dbhdr, struct employee_t** employees, char* 
     return STATUS_SUCCESS;
 }
 
-void list_employees(struct dbheader_t* dbhdr, struct employee_t* employees) {
+int list_employees(struct dbheader_t* dbhdr, struct employee_t* employees) {
+    if (NULL == dbhdr) return STATUS_ERROR;
     int i = 0;
     for (; i < dbhdr->count; i++) {
         printf("Employee %d\n", i);
@@ -140,6 +141,7 @@ void list_employees(struct dbheader_t* dbhdr, struct employee_t* employees) {
         printf("\tAddress: %s\n", employees[i].address);
         printf("\tHours: %d\n", employees[i].hours);
     }
+    return STATUS_SUCCESS;
 }
 
 int output_file(int fd, struct dbheader_t* dbhdr, struct employee_t* employees) {

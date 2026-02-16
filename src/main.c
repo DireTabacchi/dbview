@@ -84,11 +84,17 @@ int main(int argc, char* argv[]) {
     }
 
     if (addstring) {
-        add_employee(dbhdr, &employees, addstring);
+        if (add_employee(dbhdr, &employees, addstring) != STATUS_SUCCESS){
+            printf("Failed to add employee to the database\n");
+            return 0;
+        }
     }
 
     if (list) {
-        list_employees(dbhdr, employees);
+        if (list_employees(dbhdr, employees) != STATUS_SUCCESS) {
+            printf("Unable to list employees\n");
+            return 0;
+        }
     }
 
     output_file(dbfd, dbhdr, employees);
