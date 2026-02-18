@@ -106,7 +106,7 @@ void poll_loop(unsigned short port, struct dbheader_t* dbhdr, struct employee_t*
                 close(conn_fd);
             } else {
                 client_states[free_slot].fd = conn_fd;
-                client_states[free_slot].state = STATE_CONNECTED;
+                client_states[free_slot].state = STATE_HELLO;
                 nfds++;
                 printf("Slot %d has fd %d\n", free_slot, client_states[free_slot].fd);
             }
@@ -131,17 +131,16 @@ void poll_loop(unsigned short port, struct dbheader_t* dbhdr, struct employee_t*
                     } else {
                         client_states[slot].fd = -1;
                         client_states[slot].state = STATE_DISCONNECTED;
-                        printf("Client disconnected or error\n");
+                        printf("Client disconnected\n");
                         nfds--;
                     }
                 } else {
-                    printf("Received data from client: %s\n", client_states[slot].buffer);
+                    //printf("Received data from client: %s\n", client_states[slot].buffer);
+                    handle_client_fsm(dbhdr, employees, &client_states[slot]);
                 }
             }
         }
     }
-
-    //return 0;
 }
 
 int main(int argc, char* argv[]) {
@@ -211,7 +210,12 @@ int main(int argc, char* argv[]) {
     }
 
     if (portstring) {
-        port = strtoul(portstring, NULL, 10);
+        port = atoi(portstring);
+        if (port == 0) {
+            printf("Bad port: %s\n", portstring);
+            return 0;
+        }
+        
     }
 
     if (list) {
